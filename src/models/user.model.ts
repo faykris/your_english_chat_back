@@ -17,6 +17,9 @@ export class User {
   @Prop({ default: true })
   isActive: boolean;
 
+  @Prop({ default: false })
+  isModerator: boolean;
+
   @Prop({ default: Date.now })
   createdAt: Date;
 
