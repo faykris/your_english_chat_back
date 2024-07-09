@@ -34,15 +34,17 @@ export class UserService {
     const { classroomId, message, isModerator, username } = sendMessage;
     const result = await this.classroomModel.findByIdAndUpdate(
       classroomId,
-      {$push: { 
-        conversation: {
-          id: uuidv4(),
-          message,
-          username,
-          isModerator,
-          createdAt: new Date()
+      {
+        $push: { 
+          conversation: {
+            id: uuidv4(),
+            message,
+            username,
+            isModerator,
+            createdAt: new Date()
+          }
         }
-      }},
+      },
       { new: true }
     ).exec();
     return result;
