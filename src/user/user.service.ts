@@ -6,15 +6,17 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { SendMessageDto } from 'src/dtos/send-message.dto';
+import { Classroom, ClassroomDocument } from 'src/models/classroom.model';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>
+    @InjectModel(Classroom.name) private classroomModel: Model<ClassroomDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
-  async findOne(email: string): Promise<User | undefined> {
-    return this.userModel.findOne({ email }).exec();
+  async findOne(username: string): Promise<User | undefined> {
+    return this.userModel.findOne({ username }).exec();
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -29,14 +31,15 @@ export class UserService {
   }
 
   async addMessage(sendMessage: SendMessageDto) {
-    const { userId, message, role } = sendMessage;
-    const result = await this.userModel.findByIdAndUpdate(
-      userId,
+    const { classroomId, message, isModerator, username } = sendMessage;
+    const result = await this.classroomModel.findByIdAndUpdate(
+      classroomId,
       {$push: { 
         conversation: {
           id: uuidv4(),
           message,
-          role,
+          username,
+          isModerator,
           createdAt: new Date()
         }
       }},

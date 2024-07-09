@@ -1,30 +1,31 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { MessageDocument } from 'src/user/message.schema';
 
-export type UserDocument = User & Document;
+export type ClassroomDocument = Classroom & Document;
 
 @Schema()
-export class User {
+export class Classroom {
   @Prop({ required: true })
-  fullname: string;
+  title: string;
 
   @Prop({ required: true })
-  username: string;
+  description: string;
 
   @Prop({ required: true })
-  password: string;
+  videoUrl: string;
 
-  @Prop({ default: true })
-  isActive: boolean;
+  @Prop({ default: []})
+  conversation: MessageDocument[];
 
   @Prop({ default: Date.now })
   createdAt: Date;
 
   @Prop({ default: Date.now })
   updatedAt: Date;
-  
+
   @Prop()
   deletedAt?: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(Classroom);

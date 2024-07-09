@@ -10,11 +10,11 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getUser(@Req() req) {
-    return this.userService.findOne(req.user.email);
+    return this.userService.findOne(req.user.username);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('addMessage')
+  @Post('add_message')
   async login(@Body() sendMessageDto: SendMessageDto) {
     return this.userService.addMessage(sendMessageDto);
   }

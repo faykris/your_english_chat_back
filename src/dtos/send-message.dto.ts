@@ -3,10 +3,14 @@ import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 export class SendMessageDto {
   @IsNotEmpty()
   @IsString()
-  userId: string;
+  classroomId: string;
 
   @IsNotEmpty()
-  role: number;
+  @IsString()
+  username: string;
+
+  @IsNotEmpty()
+  isModerator: boolean;
 
   @IsNotEmpty()
   @MinLength(1)

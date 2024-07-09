@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { MessageDocument } from './message.schema';
 
 export type UserDocument = User & Document;
 
@@ -9,16 +8,16 @@ export class User {
   _id: Types.ObjectId;
 
   @Prop({ required: true })
-  fullName: string;
+  fullname: string;
 
   @Prop({ required: true, unique: true })
-  email: string;
+  username: string;
 
   @Prop({ required: true })
   password: string;
 
-  @Prop({ default: [] })
-  conversation: MessageDocument[];
+  @Prop({ default: true })
+  isActive: boolean;
 
   @Prop({ default: Date.now })
   createdAt: Date;

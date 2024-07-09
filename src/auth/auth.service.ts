@@ -14,22 +14,25 @@ export class AuthService {
   ) {}
 
   async register(createUserDto: CreateUserDto): Promise<User> {
-    const existingUser = await this.userService.findOne(createUserDto.email);
-    if (existingUser) {
-      throw new BadRequestException('Email already was registered previously');
+    try {
+      const user = await this.userService.create(createUserDto);
+      const { password, ...result } = user;
+      return user;
+    } catch(error) {
+      if (error.code === 11000) {
+        throw new BadRequestException('Username already was registered previously by other user');
+      } else {
+        throw new BadRequestException(error.message);
+      }
     }
-    const user = await this.userService.create(createUserDto);
-    const { password, ...result } = user;
-
-    return user;
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.userService.findOne(loginDto.email);
-    if (!user || !(await bcrypt.compare(loginDto.password, user.password))) {
-      throw new UnauthorizedException('Invalid credentials');
+    const user = await this.userService.findOne(loginDto.username);
+    if (!user || await bcrypt.compare(loginDto.password, user.password)) {
+      throw new UnauthorizedException('Username and/or password incorrects');
     }
-    const payload = { email: user.email, sub: user._id };
+    const payload = { username: user.username, sub: user._id };
     return {
       accessToken: this.jwtService.sign(payload),
     };

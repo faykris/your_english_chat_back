@@ -7,12 +7,18 @@ export type MessageDocument = Message & Document;
 export class Message {
   @Prop({ require: true})
   id: string;
+
+  @Prop({ require: true})
+  username: string;
   
   @Prop({ required: true })
   message: string;
 
   @Prop({ required: true })
-  role: number;
+  isModerator: number;
+
+  @Prop({ default: true })
+  isActive: boolean;
 
   @Prop({ default: Date.now })
   createdAt: Date;
