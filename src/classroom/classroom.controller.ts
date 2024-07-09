@@ -17,7 +17,6 @@ export class ClassroomController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getAllClassrooms(@Req() req?) {
-    console.log('getall')
     return this.classroomService.getAll(req.user.username)
   }
 
