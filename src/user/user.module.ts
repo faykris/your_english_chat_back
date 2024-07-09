@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './user.schema';
 import { Classroom } from 'src/models/classroom.model';
 import { ClassroomSchema } from 'src/classroom/classroom.schema';
+import { SocketsModule } from 'src/sockets/sockets.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ClassroomSchema } from 'src/classroom/classroom.schema';
       { name: User.name, schema: UserSchema },
       { name: Classroom.name, schema: ClassroomSchema },
     ]),
+    SocketsModule
   ],
   providers: [UserService],
   exports: [UserService, MongooseModule],

@@ -7,12 +7,14 @@ import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { SendMessageDto } from 'src/dtos/send-message.dto';
 import { Classroom, ClassroomDocument } from 'src/models/classroom.model';
+import { MessageGateway } from 'src/sockets/message.gateway';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(Classroom.name) private classroomModel: Model<ClassroomDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private messageGateway: MessageGateway,
   ) {}
 
   async findOne(username: string): Promise<User | undefined> {
@@ -47,6 +49,7 @@ export class UserService {
       },
       { new: true }
     ).exec();
+    this.messageGateway.sendMessageToAll(result);
     return result;
   }
 }

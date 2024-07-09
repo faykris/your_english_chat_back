@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClassroomModule } from './classroom/classroom.module';
 import { ClassroomService } from './classroom/classroom.service';
+import { SocketsModule } from './sockets/sockets.module';
 
 @Module({
   imports: [ 
@@ -24,6 +25,7 @@ import { ClassroomService } from './classroom/classroom.service';
     AuthModule,
     UserModule,
     ClassroomModule,
+    SocketsModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService, ClassroomService],
