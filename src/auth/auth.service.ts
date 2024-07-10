@@ -29,7 +29,7 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const user = await this.userService.findOne(loginDto.username);
-    if (!user || await bcrypt.compare(loginDto.password, user.password)) {
+    if (!user || !(await bcrypt.compare(loginDto.password, user.password))) {
       throw new UnauthorizedException('Username and/or password incorrects');
     }
     const payload = { username: user.username, sub: user._id };
